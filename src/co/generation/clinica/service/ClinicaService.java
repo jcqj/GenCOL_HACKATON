@@ -14,21 +14,27 @@ public class ClinicaService implements Consultable {
     private List<Medico> medicos = new ArrayList<>();
     private List<Turno> turnos = new ArrayList<>();
 
-
+    //getters de listas
     public List<Paciente> getPacientes() { return pacientes; }
     public List<Medico> getMedicos() { return medicos; }
     public List<Turno> getTurnos() { return turnos; }
 
-
+    // buscar por id - los usa DatosCSV
     public Paciente buscarPacientePorId(int id) {
-        return pacientes.stream().filter(p -> p.getId() == id).findFirst().orElse(null);
+        for (Paciente p : pacientes) {
+            if (p.getId() == id) return p;
+        }
+        return null;
     }
 
     public Medico buscarMedicoPorId(int id) {
-        return medicos.stream().filter(m -> m.getId() == id).findFirst().orElse(null);
+        for (Medico m : medicos) {
+            if (m.getId() == id) return m;
+        }
+        return null;
     }
 
-
+    // --- PACIENTES ---
     public void registrarPaciente(Paciente p) {
         if (!p.esValido()) {
             System.out.println("Error: Datos del paciente no válidos.");
@@ -62,7 +68,7 @@ public class ClinicaService implements Consultable {
         copia.forEach(System.out::println);
     }
 
-
+    // --- MEDICOS ---
     public void registrarMedico(Medico m) {
         if (!m.esValido()) {
             System.out.println("Error: Datos del médico no válidos.");
@@ -98,8 +104,7 @@ public class ClinicaService implements Consultable {
         copia.forEach(System.out::println);
     }
 
-    // --- 3. MÉTODOS DE TURNO (2) ---
-
+    // --- TURNOS ---
     public void asignarTurno(Turno t) {
         if (buscarPorCedula(t.getPaciente().getCedula()) == null) {
             System.out.println("Error: El paciente no existe.");
@@ -110,7 +115,7 @@ public class ClinicaService implements Consultable {
             return;
         }
         if (turnos.contains(t)) {
-            System.out.println("Error: Conflicto de agenda para el médico.");
+            System.out.println("Error: El médico ya tiene un turno en ese horario.");
             return;
         }
         int maxId = turnos.stream().mapToInt(Turno::getId).max().orElse(0);
@@ -120,7 +125,13 @@ public class ClinicaService implements Consultable {
     }
 
     public void cancelarTurno(int idTurno) {
-        Turno encontrado = turnos.stream().filter(t -> t.getId() == idTurno).findFirst().orElse(null);
+        Turno encontrado = null;
+        for (Turno t : turnos) {
+            if (t.getId() == idTurno) {
+                encontrado = t;
+                break;
+            }
+        }
         if (encontrado == null) {
             System.out.println("Turno no encontrado.");
             return;
@@ -133,21 +144,55 @@ public class ClinicaService implements Consultable {
         }
     }
 
+    // cambia el estado de un turno a cualquier estado
+    public void cambiarEstadoTurno(int idTurno, EstadoTurno nuevoEstado) {
+        Turno encontrado = null;
+        for (Turno t : turnos) {
+            if (t.getId() == idTurno) {
+                encontrado = t;
+                break;
+            }
+        }
+        if (encontrado == null) {
+            System.out.println("Turno no encontrado.");
+            return;
+        }
+        encontrado.setEstado(nuevoEstado);
+        System.out.println("Estado del turno " + idTurno + " cambiado a: " + nuevoEstado);
+    }
+
+    // --- CONSULTABLE ---
     @Override
     public List<Turno> listarTurnosDelDia(LocalDate fecha) {
-        return List.of();
+        List<Turno> resultado = new ArrayList<>();
+        for (Turno t : turnos) {
+            if (t.getFechaHora().toLocalDate().equals(fecha)) {
+                resultado.add(t);
+            }
+        }
+        resultado.sort(Comparator.comparing(Turno::getFechaHora));
+        return resultado;
     }
 
     @Override
     public List<Turno> buscarPorMedico(Medico medico) {
-        return List.of();
+        List<Turno> resultado = new ArrayList<>();
+        for (Turno t : turnos) {
+            if (t.getMedico().equals(medico)) {
+                resultado.add(t);
+            }
+        }
+        return resultado;
     }
 
     @Override
     public List<Turno> buscarPorPaciente(Paciente paciente) {
-        return List.of();
-    }
-
-    public void registrarPaciente(ClinicaService servicio) {
+        List<Turno> resultado = new ArrayList<>();
+        for (Turno t : turnos) {
+            if (t.getPaciente().equals(paciente)) {
+                resultado.add(t);
+            }
+        }
+        return resultado;
     }
 }

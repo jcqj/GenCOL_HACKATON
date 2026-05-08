@@ -1,7 +1,6 @@
 package co.generation.clinica.model;
 
 import co.generation.clinica.interfaces.Registrable;
-
 import java.util.Objects;
 
 public class Paciente implements Registrable {
@@ -12,84 +11,63 @@ public class Paciente implements Registrable {
     private String apellido;
     private String telefono;
 
-    // Constructor con id
-    public Paciente(int id, String cedula, String nombre,
-                    String apellido, String telefono) {
-
+    // Constructor con id - para reconstruir desde CSV
+    public Paciente(int id, String cedula, String nombre, String apellido, String telefono) {
         this(cedula, nombre, apellido, telefono);
         this.id = id;
     }
 
-    // Constructor sin id
-    public Paciente(String cedula, String nombre,
-                    String apellido, String telefono) {
+    // Constructor sin id - para registrar desde el menú
+    public Paciente(String cedula, String nombre, String apellido, String telefono) {
         setCedula(cedula);
         setNombre(nombre);
         setApellido(apellido);
         setTelefono(telefono);
     }
 
-    public int getId() {
-        return id;
-    }
+    //getter
+    public int getId() {return id;}
+    public String getCedula() {return cedula;}
+    public String getNombre() {return nombre;}
+    public String getApellido() {return apellido;}
+    public String getTelefono() {return telefono;}
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getCedula() {
-        return cedula;
-    }
+    //setter
+    public void setId(int id) {this.id = id;}
 
     public void setCedula(String cedula) {
         if (cedula == null || cedula.isBlank()) {
-            throw new IllegalArgumentException("La cédula es obligatoria");
+            System.out.println("Error: La cédula no puede estar vacía.");
+        } else {
+            this.cedula = cedula.trim();
         }
-
-        this.cedula = cedula.trim();
-    }
-
-    public String getNombre() {
-        return nombre;
     }
 
     public void setNombre(String nombre) {
-
         if (nombre == null || nombre.isBlank()) {
-            throw new IllegalArgumentException("El nombre es obligatorio");
+            System.out.println("Error: El nombre no puede estar vacío.");
+        } else {
+            this.nombre = nombre.trim();
         }
-
-        this.nombre = nombre.trim();
-    }
-
-    public String getApellido() {
-        return apellido;
     }
 
     public void setApellido(String apellido) {
-
         if (apellido == null || apellido.isBlank()) {
-            throw new IllegalArgumentException("El apellido es obligatorio");
+            System.out.println("Error: El apellido no puede estar vacío.");
+        } else {
+            this.apellido = apellido.trim();
         }
-
-        this.apellido = apellido.trim();
-    }
-
-    public String getTelefono() {
-        return telefono;
     }
 
     public void setTelefono(String telefono) {
-
         if (telefono == null || !telefono.matches("^[0-9]{7,10}$")) {
-            throw new IllegalArgumentException(
-                    "El teléfono debe tener entre 7 y 10 dígitos"
-            );
+            System.out.println("Error: El teléfono debe tener entre 7 y 10 dígitos.");
+        } else {
+            this.telefono = telefono;
         }
-
-        this.telefono = telefono;
     }
 
+    //funciones
     @Override
     public String getDatosRegistro() {
         return toString();
@@ -97,26 +75,27 @@ public class Paciente implements Registrable {
 
     @Override
     public boolean esValido() {
-
-        return cedula != null &&
-                !cedula.isBlank() &&
-                nombre != null &&
-                !nombre.isBlank() &&
-                apellido != null &&
-                !apellido.isBlank() &&
-                telefono != null;
+        if (cedula == null || cedula.isBlank()) return false;
+        if (nombre == null || nombre.isBlank()) return false;
+        if (apellido == null || apellido.isBlank()) return false;
+        if (telefono == null) return false;
+        return true;
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(Object objetoPaciente) {
+        if (this == objetoPaciente) return true;
+        if (objetoPaciente.getClass() != this.getClass()) return false;
 
-        if (this == o) return true;
+        Paciente otroPaciente = (Paciente) objetoPaciente;
 
-        if (!(o instanceof Paciente)) return false;
+        boolean mismaCedula = this.cedula.equals(otroPaciente.cedula);
 
-        Paciente paciente = (Paciente) o;
-
-        return cedula.equals(paciente.cedula);
+        if (mismaCedula) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
@@ -124,11 +103,9 @@ public class Paciente implements Registrable {
         return Objects.hash(cedula);
     }
 
+    // formato: "María García - 1020304050 - 3001234567"
     @Override
     public String toString() {
-
-        return nombre + " " + apellido +
-                " - " + cedula +
-                " - " + telefono;
+        return nombre + " " + apellido + " - " + cedula + " - " + telefono;
     }
 }

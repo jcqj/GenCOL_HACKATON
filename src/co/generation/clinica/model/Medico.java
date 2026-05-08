@@ -115,6 +115,7 @@ public class Medico implements Registrable {
 
     @Override
     public String toString() {
-        return "Dr. " + nombre + " " + apellido + " - " + especialidad;
+        System.out.println("DR." + nombre + "\n " + apellido + "\nEspecialidad: " + especialidad );
+        return "DR." + nombre + "\n " + apellido + "\nEspecialidad: " + especialidad ;
     }
 }
