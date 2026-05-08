@@ -8,21 +8,18 @@ public class Paciente implements Registrable {
     private String nombre;
     private String apellido;
     private String telefono;
-    //! Constructor con Id 
+
+
     public Paciente(int id, String cedula, String nombre, String apellido, String telefono) {
         this.id = id;
-        this.cedula = cedula;
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.telefono = telefono;
-        // Aqui setters para que la validacion ocurra desde el inicio 
-        setCedula(cedula);  
+
+        setCedula(cedula);
         setNombre(nombre);
         setApellido(apellido);
         setTelefono(telefono);
     }
 
-    // Constructor sin Id
+
     public Paciente(String cedula, String nombre, String apellido, String telefono) {
         this.cedula = cedula;
         this.nombre = nombre;
@@ -35,28 +32,26 @@ public class Paciente implements Registrable {
         }
         this.cedula = cedula;
     }
-    public String getNombre() {
-        return nombre;
-    }
 
-    public String getApellido() {
-        return apellido;
-    }
     public void setNombre(String nombre) {
         if (nombre == null || nombre.isBlank()) {
             throw new IllegalArgumentException("El nombre es obligatorio");
         }
         this.nombre = nombre.trim();
     }
+    public void setApellido(String apellido) {
+        if (apellido == null || apellido.isBlank()) {
+            throw new IllegalArgumentException("El apellido es obligatorio");
+        }
+        this.apellido = apellido.trim();
+    }
     public void setTelefono(String telefono) {
-        // Ojo con la Validacion de esta expresion: ^[0-9]{7,10}$ 
         if (telefono == null || !telefono.matches("^[0-9]{7,10}$")) {
             throw new IllegalArgumentException("El telefono debe contener entre 7 y 10 digitos numericos.");
         }
         this.telefono = telefono;
     }
 
-    // Lectores Get
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
     public String getCedula() { return cedula; }
@@ -74,14 +69,14 @@ public class Paciente implements Registrable {
     @Override
     public boolean esValido() {
         // Verificando que los atributos obligatorios no sean nulos o vacios
-        return (cedula != null && !cedula.isBlank()) && 
-               (nombre != null && !nombre.isBlank()) && 
+        return (cedula != null && !cedula.isBlank()) &&
+               (nombre != null && !nombre.isBlank()) &&
                (telefono != null && telefono.matches("^[0-9]{7,10}$"));
     }
     //Metodo fundamtl
     @Override
     public boolean equals(Object o) {
-        // Dos pacientes son iguales si tienen la misma cedula 
+        // Dos pacientes son iguales si tienen la misma cedula
         if (this == o) return true;
         if (!(o instanceof Paciente)) return false;
         Paciente paciente = (Paciente) o;
@@ -99,5 +94,5 @@ public class Paciente implements Registrable {
         return nombre + " " + apellido + " - " + cedula + " - " + telefono;
     }
 
-    
+
 }

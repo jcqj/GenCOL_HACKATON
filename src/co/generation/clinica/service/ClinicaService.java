@@ -17,6 +17,14 @@ public class ClinicaService {
     public List<Turno> getTurnos() { return turnos; }
 
 
+    public Paciente buscarPacientePorId(int id) {
+        return pacientes.stream().filter(p -> p.getId() == id).findFirst().orElse(null);
+    }
+
+    public Medico buscarMedicoPorId(int id) {
+        return medicos.stream().filter(m -> m.getId() == id).findFirst().orElse(null);
+    }
+
 
     public void registrarPaciente(Paciente p) {
         if (!p.esValido()) {
