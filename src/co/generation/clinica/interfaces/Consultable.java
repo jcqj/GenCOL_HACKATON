@@ -1,7 +1,6 @@
 package co.generation.clinica.interfaces;
 
 import co.generation.clinica.model.Turno;
-
 import java.time.LocalDate;
 import java.util.List;
 

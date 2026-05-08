@@ -18,6 +18,40 @@ public class ClinicaService {
 
 
 
+    public void registrarPaciente(Paciente p) {
+        if (!p.esValido()) {
+            System.out.println("Error: Datos del paciente no válidos.");
+            return;
+        }
+        if (pacientes.contains(p)) {
+            System.out.println("Error: Ya existe un paciente con esa cédula.");
+            return;
+        }
+        int maxId = pacientes.stream().mapToInt(Paciente::getId).max().orElse(0);
+        p.setId(maxId + 1);
+        pacientes.add(p);
+        System.out.println("Paciente registrado con éxito: " + p);
+    }
+
+    public Paciente buscarPorCedula(String cedula) {
+        for (Paciente p : pacientes) {
+            if (p.getCedula().equals(cedula)) return p;
+        }
+        return null;
+    }
+
+    public void listarPacientes() {
+        if (pacientes.isEmpty()) {
+            System.out.println("No hay pacientes registrados.");
+            return;
+        }
+        List<Paciente> copia = new ArrayList<>(pacientes);
+        copia.sort(Comparator.comparing(Paciente::getApellido).thenComparing(Paciente::getNombre));
+        System.out.println("\n--- LISTADO DE PACIENTES ---");
+        copia.forEach(System.out::println);
+    }
+
+
     public void registrarMedico(Medico m) {
         if (!m.esValido()) {
             System.out.println("Error: Datos del médico no válidos.");
@@ -27,10 +61,8 @@ public class ClinicaService {
             System.out.println("Error: El médico ya se encuentra registrado.");
             return;
         }
-        
         int maxId = medicos.stream().mapToInt(Medico::getId).max().orElse(0);
         m.setId(maxId + 1);
-        
         medicos.add(m);
         System.out.println("Médico registrado con éxito: " + m);
     }
@@ -50,61 +82,43 @@ public class ClinicaService {
             return;
         }
         List<Medico> copia = new ArrayList<>(medicos);
-        // Orden natural del Enum Especialidad y luego por Apellido
-        copia.sort(Comparator.comparing(Medico::getEspecialidad)
-                             .thenComparing(Medico::getApellido));
-        
-        for (Medico m : copia) {
-            System.out.println(m);
-        }
+        copia.sort(Comparator.comparing(Medico::getEspecialidad).thenComparing(Medico::getApellido));
+        System.out.println("\n--- LISTADO DE MÉDICOS ---");
+        copia.forEach(System.out::println);
     }
 
-
+    // --- 3. MÉTODOS DE TURNO (2) ---
 
     public void asignarTurno(Turno t) {
-        // 1. Verificar existencia del paciente
         if (buscarPorCedula(t.getPaciente().getCedula()) == null) {
-            System.out.println("Error: El paciente no existe en el sistema.");
+            System.out.println("Error: El paciente no existe.");
             return;
         }
-        // 2. Verificar existencia del médico
         if (buscarPorNombreApellido(t.getMedico().getNombre(), t.getMedico().getApellido()) == null) {
-            System.out.println("Error: El médico no existe en el sistema.");
+            System.out.println("Error: El médico no existe.");
             return;
         }
-        // 3. Verificar conflicto de agenda (usa equals de Turno que compara médico y fechaHora)
         if (turnos.contains(t)) {
-            System.out.println("Error: El médico ya tiene un turno asignado en esa fecha y hora.");
+            System.out.println("Error: Conflicto de agenda para el médico.");
             return;
         }
-
         int maxId = turnos.stream().mapToInt(Turno::getId).max().orElse(0);
         t.setId(maxId + 1);
-        
         turnos.add(t);
-        System.out.println("Turno asignado con éxito: " + t);
+        System.out.println("Turno asignado: " + t);
     }
 
     public void cancelarTurno(int idTurno) {
-        Turno encontrado = null;
-        for (Turno t : turnos) {
-            if (t.getId() == idTurno) {
-                encontrado = t;
-                break;
-            }
-        }
-
+        Turno encontrado = turnos.stream().filter(t -> t.getId() == idTurno).findFirst().orElse(null);
         if (encontrado == null) {
             System.out.println("Turno no encontrado.");
             return;
         }
-
-        // Verificar estados usando el Enum EstadoTurno
-        if (encontrado.getEstado() == EstadoTurno.ATENDIDO || encontrado.getEstado() == EstadoTurno.CANCELADO) {
-            System.out.println("No se puede cancelar un turno que ya está " + encontrado.getEstado());
+        if (encontrado.getEstado() != EstadoTurno.PENDIENTE) {
+            System.out.println("No se puede cancelar un turno en estado: " + encontrado.getEstado());
         } else {
             encontrado.setEstado(EstadoTurno.CANCELADO);
-            System.out.println("Confirmación: El turno " + idTurno + " ha sido cancelado.");
+            System.out.println("Turno " + idTurno + " cancelado.");
         }
     }
 }

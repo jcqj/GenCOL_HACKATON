@@ -8,26 +8,26 @@ public class Paciente implements Registrable {
     private String nombre;
     private String apellido;
     private String telefono;
-    // Constructor con Id 
+    //! Constructor con Id 
     public Paciente(int id, String cedula, String nombre, String apellido, String telefono) {
         this.id = id;
         this.cedula = cedula;
         this.nombre = nombre;
         this.apellido = apellido;
         this.telefono = telefono;
-
-        // Se aqui setters para que la validacion ocurra desde el inicio 
-
+        // Aqui setters para que la validacion ocurra desde el inicio 
         setCedula(cedula);  
         setNombre(nombre);
         setApellido(apellido);
         setTelefono(telefono);
-        
     }
 
     // Constructor sin Id
     public Paciente(String cedula, String nombre, String apellido, String telefono) {
-        this(0, cedula, nombre, apellido, telefono);
+        this.cedula = cedula;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.telefono = telefono;
     }
     public void setCedula(String cedula) {
         if (cedula == null || cedula.isBlank()) {
