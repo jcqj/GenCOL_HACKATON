@@ -61,6 +61,7 @@ public class Main {
     }
 
     public static void registrarMedico() {
+        
         System.out.print("Ingrese Nombre: ");
         String nombre = sc.nextLine();
 

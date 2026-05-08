@@ -82,6 +82,7 @@ public class DatosCSV {
 
     public static void guardar(ClinicaService servicio) {
         // Guardar Pacientes
+        System.out.println("DEBUG: Se están guardando " + servicio.getMedicos().size() + " médicos.");
         try (PrintWriter pw = new PrintWriter(new FileWriter(F_PACIENTES))) {
             for (Paciente p : servicio.getPacientes()) {
                 pw.println(p.getId() + "," + p.getCedula() + "," + p.getNombre() + "," + p.getApellido() + "," + p.getTelefono());
@@ -99,7 +100,7 @@ public class DatosCSV {
             System.out.println("Error al guardar medicos: " + e.getMessage());
         }
 
-        // Guardar Turnos - faltaba este bloque
+        // Guardar Turnos - 
         try (PrintWriter pw = new PrintWriter(new FileWriter(F_TURNOS))) {
             for (Turno t : servicio.getTurnos()) {
                 pw.println(t.getId() + "," + t.getPaciente().getCedula() + "," +
