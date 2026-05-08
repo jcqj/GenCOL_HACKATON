@@ -1,6 +1,8 @@
 package co.generation.clinica.datos;
+
 import co.generation.clinica.model.*;
 import co.generation.clinica.service.ClinicaService;
+
 import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -28,8 +30,8 @@ public class DatosCSV {
                 if (linea.isBlank()) continue;
                 String[] p = linea.split(",", -1);
                 servicio.getPacientes().add(new Paciente(
-                    Integer.parseInt(p[0].trim()),
-                    p[1].trim(), p[2].trim(), p[3].trim(), p[4].trim()
+                        Integer.parseInt(p[0].trim()),
+                        p[1].trim(), p[2].trim(), p[3].trim(), p[4].trim()
                 ));
             }
         } catch (IOException e) {
@@ -46,9 +48,9 @@ public class DatosCSV {
                 if (linea.isBlank()) continue;
                 String[] m = linea.split(",", -1);
                 servicio.getMedicos().add(new Medico(
-                    Integer.parseInt(m[0].trim()),
-                    m[1].trim(), m[2].trim(),
-                    Especialidad.valueOf(m[3].trim().toUpperCase())
+                        Integer.parseInt(m[0].trim()),
+                        m[1].trim(), m[2].trim(),
+                        Especialidad.valueOf(m[3].trim().toUpperCase())
                 ));
             }
         } catch (IOException e) {
@@ -64,7 +66,7 @@ public class DatosCSV {
             while ((linea = br.readLine()) != null) {
                 if (linea.isBlank()) continue;
                 String[] t = linea.split(",", -1);
-                
+
                 // Buscamos los objetos para que el turno no sea solo texto
                 Paciente pac = servicio.buscarPacientePorId(Integer.parseInt(t[0].trim()));
                 Medico med = servicio.buscarMedicoPorId(Integer.parseInt(t[1].trim()));
@@ -72,7 +74,7 @@ public class DatosCSV {
                 if (pac != null && med != null) {
                     LocalDateTime fecha = LocalDateTime.parse(t[2].trim(), FMT);
                     EstadoTurno estado = EstadoTurno.valueOf(t[3].trim().toUpperCase());
-                    
+
                     // Aquí se crea el objeto Turno real y se guarda en la lista
                     servicio.getTurnos().add(new Turno(pac, med, fecha, estado));
                 }

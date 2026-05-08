@@ -147,4 +147,7 @@ public class ClinicaService implements Consultable {
     public List<Turno> buscarPorPaciente(Paciente paciente) {
         return List.of();
     }
+
+    public void registrarPaciente(ClinicaService servicio) {
+    }
 }

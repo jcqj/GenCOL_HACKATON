@@ -3,15 +3,15 @@ import co.generation.clinica.model.*;
 import co.generation.clinica.service.ClinicaService;
 import java.util.Scanner;
 import co.generation.clinica.datos.DatosCSV;
-public class Main { 
 
+public class Main {
    static Scanner sc = new Scanner(System.in);
    static ClinicaService servicio = new ClinicaService();
     public static void main(String[] args) {
-        // --- AQUÍ VA LA CARGA DEL CSV ---
-        // Se ejecuta una sola vez al iniciar
+
+
         DatosCSV.cargar(servicio);
-   
+
     int opcion = -1;
         while (opcion != 0) {
             mostrarMenu();
