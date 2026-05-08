@@ -93,6 +93,4 @@ public class Paciente implements Registrable {
         // El Formato
         return nombre + " " + apellido + " - " + cedula + " - " + telefono;
     }
-
-
 }

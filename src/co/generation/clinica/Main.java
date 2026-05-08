@@ -2,13 +2,17 @@ package co.generation.clinica;
 import co.generation.clinica.model.*;
 import co.generation.clinica.service.ClinicaService;
 import java.util.Scanner;
-
-public class Main {
+import co.generation.clinica.datos.DatosCSV;
+public class Main { 
 
    static Scanner sc = new Scanner(System.in);
-   ClinicaService servicio = new ClinicaService();
-
-   int opcion = -1;
+   static ClinicaService servicio = new ClinicaService();
+    public static void main(String[] args) {
+        // --- AQUÍ VA LA CARGA DEL CSV ---
+        // Se ejecuta una sola vez al iniciar
+        DatosCSV.cargar(servicio);
+   
+    int opcion = -1;
         while (opcion != 0) {
             mostrarMenu();
             opcion = leerInt("Selecciona una opción: ");
@@ -27,4 +31,5 @@ public class Main {
                 default -> System.out.println("Opción no válida.");
             }
         }
+}
 }
