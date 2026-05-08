@@ -1,11 +1,14 @@
 package co.generation.clinica.service;
 
+import co.generation.clinica.interfaces.Consultable;
 import co.generation.clinica.model.*;
+
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public class ClinicaService {
+public class ClinicaService implements Consultable {
 
     private List<Paciente> pacientes = new ArrayList<>();
     private List<Medico> medicos = new ArrayList<>();
@@ -128,5 +131,20 @@ public class ClinicaService {
             encontrado.setEstado(EstadoTurno.CANCELADO);
             System.out.println("Turno " + idTurno + " cancelado.");
         }
+    }
+
+    @Override
+    public List<Turno> listarTurnosDelDia(LocalDate fecha) {
+        return List.of();
+    }
+
+    @Override
+    public List<Turno> buscarPorMedico(Medico medico) {
+        return List.of();
+    }
+
+    @Override
+    public List<Turno> buscarPorPaciente(Paciente paciente) {
+        return List.of();
     }
 }
