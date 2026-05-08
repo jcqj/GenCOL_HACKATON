@@ -1,16 +1,14 @@
 package co.generation.clinica;
-
 import co.generation.clinica.model.*;
 import co.generation.clinica.service.ClinicaService;
 import java.util.Scanner;
 
 public class Main {
-    // Las variables static van aquí (fuera del main)
-    static Scanner sc = new Scanner(System.in);
-    static ClinicaService servicio = new ClinicaService();
 
-    public static void main(String[] args) {
-        int opcion = -1;
+   static Scanner sc = new Scanner(System.in);
+   ClinicaService servicio = new ClinicaService();
+
+   int opcion = -1;
         while (opcion != 0) {
             mostrarMenu();
             opcion = leerInt("Selecciona una opción: ");
@@ -29,33 +27,4 @@ public class Main {
                 default -> System.out.println("Opción no válida.");
             }
         }
-    }
-
-    // --- MÉTODOS AUXILIARES (Debes tenerlos definidos abajo) ---
-
-    private static void mostrarMenu() {
-        System.out.println("\n--- SISTEMA DE CLÍNICA ---");
-        System.out.println("1. Registrar Paciente");
-        System.out.println("2. Registrar Médico");
-        System.out.println("0. Salir");
-    }
-
-    private static int leerInt(String mensaje) {
-        System.out.print(mensaje);
-        try {
-            return Integer.parseInt(sc.nextLine());
-        } catch (NumberFormatException e) {
-            return -1;
-        }
-    }
-
-    // Agrega aquí los métodos que faltan (registrarPaciente, registrarMedico, etc.)
-    private static void registrarPaciente(ClinicaService s) { /* lógica */ }
-    private static void registrarMedico(ClinicaService s) { /* lógica */ }
-    private static void asignarTurno(ClinicaService s) { /* lógica */ }
-    private static void listarTurnosDelDia(ClinicaService s) { /* lógica */ }
-    private static void cancelarTurno(ClinicaService s) { /* lógica */ }
-    private static void turnosPorMedico(ClinicaService s) { /* lógica */ }
-    private static void turnosPorPaciente(ClinicaService s) { /* lógica */ }
-    private static void cambiarEstado(ClinicaService s) { /* lógica */ }
 }
