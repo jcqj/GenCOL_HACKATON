@@ -20,22 +20,21 @@ public class Main {
         int opcion = -1;
         while (opcion != 0) {
             mostrarMenu();
-            System.out.println("Selecciona una opción: ");
+            System.out.print("Selecciona una opción: ");
             opcion = sc.nextInt();
             sc.nextLine();
             switch (opcion) {
-                case 1 -> registrarPaciente(servicio);
-                case 2 -> registrarMedico(servicio);
-                case 3 -> asignarTurno(servicio);
-                case 4 -> listarTurnosDelDia(servicio);
-                case 5 -> cancelarTurno(servicio);
-                case 6 -> turnosPorMedico(servicio);
-                case 7 -> turnosPorPaciente(servicio);
-                case 8 -> cambiarEstado(servicio);
+                case 1 -> registrarPaciente();
+                case 2 -> registrarMedico();
+                case 3 -> asignarTurno();
+                case 4 -> listarTurnosDelDia();
+                case 5 -> cancelarTurno();
+                case 6 -> turnosPorMedico();
+                case 7 -> turnosPorPaciente();
+                case 8 -> cambiarEstado();
                 case 9 -> servicio.listarPacientes();
                 case 10 -> servicio.listarMedicos();
                 case 0 -> {
-                    System.out.println("Guardando datos...");
                     DatosCSV.guardar(servicio);
                     System.out.println("Hasta pronto. Datos guardados.");
                 }
@@ -44,39 +43,39 @@ public class Main {
         }
     }
 
-    public static void registrarPaciente(ClinicaService servicio) {
-        System.out.println("Ingrese Cedula");
+    public static void registrarPaciente() {
+        System.out.print("Ingrese Cedula: ");
         String cedula = sc.nextLine();
 
-        System.out.println("Ingrese Nombre");
+        System.out.print("Ingrese Nombre: ");
         String nombre = sc.nextLine();
 
-        System.out.println("Ingrese Apellido");
+        System.out.print("Ingrese Apellido: ");
         String apellido = sc.nextLine();
 
-        System.out.println("Ingrese Telefono");
+        System.out.print("Ingrese Telefono: ");
         String telefono = sc.nextLine();
 
         Paciente p1 = new Paciente(cedula, nombre, apellido, telefono);
-        servicio.registrarPaciente(p1); // faltaba esta línea
+        servicio.registrarPaciente(p1);
     }
 
-    public static void registrarMedico(ClinicaService servicio) {
-        System.out.println("Ingrese Nombre");
+    public static void registrarMedico() {
+        System.out.print("Ingrese Nombre: ");
         String nombre = sc.nextLine();
 
-        System.out.println("Ingrese Apellido");
+        System.out.print("Ingrese Apellido: ");
         String apellido = sc.nextLine();
 
-        System.out.println("Ingrese Especialidad (GENERAL, PEDIATRIA, CARDIOLOGIA, URGENCIAS)");
+        System.out.println("Ingrese Especialidad (GENERAL, PEDIATRIA, CARDIOLOGIA, URGENCIAS): ");
         Especialidad especialidad = Especialidad.valueOf(sc.nextLine().toUpperCase());
 
         Medico m1 = new Medico(nombre, apellido, especialidad);
         servicio.registrarMedico(m1);
     }
 
-    public static void asignarTurno(ClinicaService servicio) {
-        System.out.println("Ingrese la cédula del paciente");
+    public static void asignarTurno() {
+        System.out.print("Ingrese la cédula del paciente: ");
         String cedula = sc.nextLine();
 
         Paciente paciente = servicio.buscarPorCedula(cedula);
@@ -85,10 +84,10 @@ public class Main {
             return;
         }
 
-        System.out.println("Ingrese el nombre del médico");
+        System.out.print("Ingrese el nombre del médico: ");
         String nombre = sc.nextLine();
 
-        System.out.println("Ingrese el apellido del médico");
+        System.out.print("Ingrese el apellido del médico: ");
         String apellido = sc.nextLine();
 
         Medico medico = servicio.buscarPorNombreApellido(nombre, apellido);
@@ -114,25 +113,25 @@ public class Main {
         servicio.asignarTurno(t);
     }
 
-    public static void cancelarTurno(ClinicaService servicio) {
-        System.out.println("Ingrese el ID del turno a cancelar");
+    public static void cancelarTurno() {
+        System.out.print("Ingrese el ID del turno a cancelar: ");
         int id = sc.nextInt();
         sc.nextLine();
         servicio.cancelarTurno(id);
     }
 
-    public static void cambiarEstado(ClinicaService servicio) {
-        System.out.println("Ingrese el ID del turno");
+    public static void cambiarEstado() {
+        System.out.print("Ingrese el ID del turno: ");
         int id = sc.nextInt();
         sc.nextLine();
 
-        System.out.println("Ingrese el nuevo estado (PENDIENTE, ATENDIDO, CANCELADO)");
+        System.out.println("Ingrese el nuevo estado (PENDIENTE, ATENDIDO, CANCELADO): ");
         EstadoTurno nuevoEstado = EstadoTurno.valueOf(sc.nextLine().toUpperCase());
 
         servicio.cambiarEstadoTurno(id, nuevoEstado);
     }
 
-    public static void turnosPorMedico(ClinicaService servicio) {
+    public static void turnosPorMedico() {
         System.out.print("Nombre del médico: ");
         String nombre = sc.nextLine();
 
@@ -153,8 +152,8 @@ public class Main {
         turnos.forEach(System.out::println);
     }
 
-    public static void turnosPorPaciente(ClinicaService servicio) {
-        System.out.println("Ingrese la cédula del paciente");
+    public static void turnosPorPaciente() {
+        System.out.print("Ingrese la cédula del paciente: ");
         String cedula = sc.nextLine();
 
         Paciente paciente = servicio.buscarPorCedula(cedula);
@@ -171,7 +170,7 @@ public class Main {
         turnos.forEach(System.out::println);
     }
 
-    public static void listarTurnosDelDia(ClinicaService servicio) {
+    public static void listarTurnosDelDia() {
         System.out.print("Año: ");
         int anio = sc.nextInt();
         System.out.print("Mes: ");
