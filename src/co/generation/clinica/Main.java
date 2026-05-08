@@ -1,21 +1,27 @@
 package co.generation.clinica;
+
 import co.generation.clinica.model.*;
 import co.generation.clinica.service.ClinicaService;
-import java.util.Scanner;
-import co.generation.clinica.datos.DatosCSV;
-public class Main { 
 
-   static Scanner sc = new Scanner(System.in);
-   static ClinicaService servicio = new ClinicaService();
+import java.util.Scanner;
+
+import co.generation.clinica.datos.DatosCSV;
+
+public class Main {
+
+    static Scanner sc = new Scanner(System.in);
+    static ClinicaService servicio = new ClinicaService();
+
     public static void main(String[] args) {
         // --- AQUÍ VA LA CARGA DEL CSV ---
         // Se ejecuta una sola vez al iniciar
         DatosCSV.cargar(servicio);
-   
-    int opcion = -1;
+
+        int opcion = -1;
         while (opcion != 0) {
             mostrarMenu();
-            opcion = leerInt("Selecciona una opción: ");
+            System.out.println("Selecciona una opción: ");
+            opcion = sc.nextInt();
             switch (opcion) {
                 case 1 -> registrarPaciente(servicio);
                 case 2 -> registrarMedico(servicio);
@@ -31,5 +37,37 @@ public class Main {
                 default -> System.out.println("Opción no válida.");
             }
         }
-}
+    }
+
+    private static void turnosPorPaciente(ClinicaService servicio) {
+    }
+
+    private static void cancelarTurno(ClinicaService servicio) {
+        
+    }
+
+    private static void asignarTurno(ClinicaService servicio) {
+        
+    }
+
+    private static void registrarMedico(ClinicaService servicio) {
+        
+    }
+
+    private static void cambiarEstado(ClinicaService servicio) {
+
+    }
+
+    private static void turnosPorMedico(ClinicaService servicio) {
+
+    }
+
+    private static void listarTurnosDelDia(ClinicaService servicio) {
+    }
+
+    private static void registrarPaciente(ClinicaService servicio) {
+    }
+
+    private static void mostrarMenu() {
+    }
 }
